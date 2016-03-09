@@ -260,7 +260,12 @@ def main(CLIENT_KEY, CLIENT_ID):
 		def onPartialTranscript(self, transcript):
 			print "Partial transcript: " + transcript
 		def onFinalResponse(self, response):
-			print "Final response: " + str(response)
+			if response.has_key("AllResults"):
+				for result in response["AllResults"]:
+					if response.has_key("AllResults"):
+						print result["SpokenResponseLong"]
+						return
+			print 'No result :('
 		def onTranslatedResponse(self, response):
 			print "Translated response: " + response
 		def onError(self, err):
