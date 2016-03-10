@@ -63,10 +63,6 @@ decoder.set_lm_file("lm", language_model_file)
 decoder.set_keyphrase("kws", "hey ada")
 decoder.set_search("kws")
 
-# Open file to read the data
-# DATADIR = "pocketsphinx/test/data"
-# stream = open(os.path.join(DATADIR, "goforward.raw"), "rb")
-
 # Alternatively you can read from microphone
 import pyaudio
 
