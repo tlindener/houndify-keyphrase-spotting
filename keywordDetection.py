@@ -57,3 +57,16 @@ class KeywordDetection:
                 self.houndClient.query()
                 stream.start_stream()
                 decoder.start_utt()
+
+if __name__ == '__main__':
+    import sys
+
+    if len(sys.argv < 3):
+        print "Usage: %s <client key> <client ID>" % sys.argv[0]
+		sys.exit(0)
+
+    CLIENT_KEY = sys.argv[1]
+	CLIENT_ID = sys.argv[2]
+
+    kd = KeywordDetection(CLIENT_KEY, CLIENT_ID)
+    kd.start()
