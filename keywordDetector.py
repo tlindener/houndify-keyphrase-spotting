@@ -8,7 +8,7 @@ RATE = 16000
 BUFFER_SIZE = 1024
 MODELDIR = "pocketsphinx/model"
 
-class KeywordDetection:
+class KeywordDetector:
     def __init__(self, key, id):
         self.houndClient = houndify.VoiceQuery(key, id)
 
@@ -68,5 +68,5 @@ if __name__ == '__main__':
     CLIENT_KEY = sys.argv[1]
 	CLIENT_ID = sys.argv[2]
 
-    kd = KeywordDetection(CLIENT_KEY, CLIENT_ID)
+    kd = KeywordDetector(CLIENT_KEY, CLIENT_ID)
     kd.start()
