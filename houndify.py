@@ -14,6 +14,7 @@ import uuid
 import urllib
 import zlib
 import pyaudio
+import os
 
 HOUND_SERVER = "api.houndify.com"
 TEXT_ENDPOINT = "/v1/text"
@@ -256,8 +257,10 @@ class VoiceQuery:
 		def onFinalResponse(self, response):
 			if response.has_key("AllResults"):
 				for result in response["AllResults"]:
-					if response.has_key("AllResults"):
-						print result["SpokenResponseLong"]
+					if result.has_key("SpokenResponseLong"):
+						answer = result["SpokenResponseLong"]
+						os.system("say -v Samantha '"+answer+"'")
+						print answer
 						return
 			print 'No result :('
 		def onTranslatedResponse(self, response):
