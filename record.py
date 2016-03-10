@@ -13,6 +13,7 @@ import time
 import uuid
 import urllib
 import zlib
+import pyaudio
 
 HOUND_SERVER = "api.houndify.com"
 TEXT_ENDPOINT = "/v1/text"
@@ -243,14 +244,7 @@ class StreamingHoundClient:
 # The code below will demonstrate how to use streaming audio through Hound
 #
 # if __name__ == '__main__':
-def main(CLIENT_KEY, CLIENT_ID):
-	import pyaudio
-	from array import array
-
-	BUFFER_SIZE = 512
-	FORMAT = pyaudio.paInt16
-	RATE = 16000
-
+class VoiceQuery:
 	#
 	# Simplest HoundListener; just print out what we receive.
 	#
@@ -271,25 +265,33 @@ def main(CLIENT_KEY, CLIENT_ID):
 		def onError(self, err):
 			print "ERROR"
 
-	client = StreamingHoundClient(CLIENT_KEY, CLIENT_ID)
-	## Pretend we're at SoundHound HQ.  Set other fields as appropriate
-	client.setLocation(37.388309, -121.973968)
+	def __init__(self, key, id):
+		self.CLIENT_KEY = key
+		self.CLIENT_ID = id
+		self.BUFFER_SIZE = 512
+		self.FORMAT = pyaudio.paInt16
+		self.RATE = 16000
 
-	print "============== go ==================="
-	finished = False
-	client.start(MyListener())
-	# note: stream must be defined right before use, or must be stopped after
-	# definition. If any recording is lost, error is thrown
-	p = pyaudio.PyAudio()
-	stream = p.open(format=FORMAT, channels=1, rate=RATE,
-		input=True, output=True,
-		frames_per_buffer=BUFFER_SIZE)
+	def query(self):
+		client = StreamingHoundClient(self.CLIENT_KEY, self.CLIENT_ID)
+		## Pretend we're at SoundHound HQ.  Set other fields as appropriate
+		client.setLocation(37.388309, -121.973968)
 
-	while not finished:
-		samples = stream.read(BUFFER_SIZE)
-		finished = client.fill(samples)
+		finished = False
+		client.start(self.MyListener())
 
-	client.finish()
-	stream.stop_stream()
-	stream.close()
-	p.terminate()
+		# note: stream must be defined right before use, or must be stopped after
+		# definition. If any recording is lost, error is thrown
+		p = pyaudio.PyAudio()
+		stream = p.open(format=self.FORMAT, channels=1, rate=self.RATE,
+			input=True, output=True,
+			frames_per_buffer=self.BUFFER_SIZE)
+
+		while not finished:
+			samples = stream.read(self.BUFFER_SIZE)
+			finished = client.fill(samples)
+
+		client.finish()
+		stream.stop_stream()
+		stream.close()
+		p.terminate()
