@@ -15,6 +15,7 @@ import urllib
 import zlib
 import pyaudio
 import os
+import playwave
 
 HOUND_SERVER = "api.houndify.com"
 TEXT_ENDPOINT = "/v1/text"
@@ -258,9 +259,10 @@ class VoiceQuery:
 			if response.has_key("AllResults"):
 				for result in response["AllResults"]:
 					if result.has_key("SpokenResponseLong"):
+						playwave.play('resources/hound_stop.wav')
 						answer = result["SpokenResponseLong"]
-						os.system("say -v Samantha '"+answer+"'")
 						print answer
+						os.system("say -v Samantha '"+answer+"'")
 						return
 			print 'No result :('
 		def onTranslatedResponse(self, response):
@@ -286,6 +288,7 @@ class VoiceQuery:
 		# note: stream must be defined right before use, or must be stopped after
 		# definition. If any recording is lost, error is thrown
 		p = pyaudio.PyAudio()
+		playwave.play('resources/hound_start.wav')
 		stream = p.open(format=self.FORMAT, channels=1, rate=self.RATE,
 			input=True, output=True,
 			frames_per_buffer=self.BUFFER_SIZE)
