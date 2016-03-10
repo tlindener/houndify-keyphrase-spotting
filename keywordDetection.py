@@ -54,7 +54,6 @@ class KeywordDetection:
                 print decoder.hyp().hypstr
                 stream.stop_stream()
                 decoder.end_utt()
-                print '1'
                 self.houndClient.query()
-                print '2'
+                stream.start_stream()
                 decoder.start_utt()
