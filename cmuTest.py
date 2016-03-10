@@ -34,6 +34,7 @@
 
 
 import sys, os
+import pyaudio
 from pocketsphinx import pocketsphinx
 from sphinxbase import sphinxbase
 
@@ -62,9 +63,6 @@ decoder = pocketsphinx.Decoder(config)
 decoder.set_lm_file("lm", language_model_file)
 decoder.set_keyphrase("kws", "hey ada")
 decoder.set_search("kws")
-
-# Alternatively you can read from microphone
-import pyaudio
 
 FORMAT = pyaudio.paInt16
 RATE = 16000
