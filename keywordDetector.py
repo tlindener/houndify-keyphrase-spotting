@@ -66,7 +66,7 @@ if __name__ == '__main__':
         sys.exit(0)
 
     CLIENT_KEY = sys.argv[1]
-	CLIENT_ID = sys.argv[2]
+    CLIENT_ID = sys.argv[2]
 
     kd = KeywordDetector(CLIENT_KEY, CLIENT_ID)
     kd.start()
