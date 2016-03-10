@@ -63,7 +63,7 @@ if __name__ == '__main__':
 
     if len(sys.argv < 3):
         print "Usage: %s <client key> <client ID>" % sys.argv[0]
-		sys.exit(0)
+        sys.exit(0)
 
     CLIENT_KEY = sys.argv[1]
 	CLIENT_ID = sys.argv[2]
