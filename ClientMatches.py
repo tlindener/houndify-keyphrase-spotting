@@ -9,12 +9,20 @@ def getClientMatches():
         'WrittenResponseLong': 'Ay boo thang'
       },
       {
-        'Expression': '["do"] . "caterpillars" . "know" . [("that" | "if")] . "they" . ["will"] . "become" . ("a butterfly" | "butterflies") . ("when" | "while") . "they" . ["are"] . ("make" | "making") . "their" . "cocoon"',
+        'Expression': '[("do"| "the")] . "caterpillars" . "know" . [("that" | "if")] . "they" . ["will"] . "become" . ("a butterfly" | "butterflies") . ("when" | "while") . "they" . ["are"] . ("make" | "making") . "their" . "cocoon"',
         'Result': { 'Intent' : 'CONFIRM' },
         'SpokenResponse': 'Yes.',
-        'SpokenResponseLong': 'Yes they do know.',
+        'SpokenResponseLong': 'Yes. I know because I am a butterfly.',
         'WrittenResponse': 'Yes.',
-        'WrittenResponseLong': 'Yes they do know.'
+        'WrittenResponseLong': 'Yes. I know because I am a butterfly.'
+      },
+      {
+        'Expression': '["when"] . "caterpillars" . "make" . "their" . "cocoon" . "do". "they" . "know" . ("that" | "if") . "they" . ["will"] . "become" . ("a butterfly" | "butterflies")',
+        'Result': { 'Intent' : 'CONFIRM' },
+        'SpokenResponse': 'Yes.',
+        'SpokenResponseLong': 'Yes. I know because I am a butterfly.',
+        'WrittenResponse': 'Yes.',
+        'WrittenResponseLong': 'Yes. I know because I am a butterfly.'
       },
       {
         'Expression': '"do you" . ("like" | "enjoy") . ["to eat"] . "ice cream"',
