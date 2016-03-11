@@ -7,6 +7,8 @@ import sys
 CHUNK = 1024
 
 def play(file_name):
+    if not file_name:
+        return
     wf = wave.open(file_name, 'rb')
 
     p = pyaudio.PyAudio()
