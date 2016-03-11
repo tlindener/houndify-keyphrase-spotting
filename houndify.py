@@ -18,6 +18,7 @@ import os
 import playwave
 
 import ClientMatches
+import clock
 
 HOUND_SERVER = "api.houndify.com"
 TEXT_ENDPOINT = "/v1/text"
@@ -259,7 +260,12 @@ class VoiceQuery:
 			print "Partial transcript: " + transcript
 		def onFinalResponse(self, response):
 			if response.has_key("AllResults"):
-				for result in response["AllResults"]:
+				allResults = response["AllResults"]
+				for result in allResults:
+					if result.has_key("CommandKind"):
+						matchedCommand = self._matchCommand(result["CommandKind"], allResults)
+						if matchedCommand and result.has_key("ClientActionSucceededResult"):
+							result = result["ClientActionSucceededResult"]
 					if result.has_key("SpokenResponseLong"):
 						playwave.play('resources/hound_stop.wav')
 						answer = result["SpokenResponseLong"]
@@ -271,6 +277,13 @@ class VoiceQuery:
 			print "Translated response: " + response
 		def onError(self, err):
 			print "ERROR"
+
+		def _matchCommand(self, commandKind, allResults):
+			matched = False
+			if commandKind == 'AlarmCommand':
+				matched = True
+				clock.alarmclock(allResults)
+			return matched
 
 	def __init__(self, key, id):
 		self.CLIENT_KEY = key
