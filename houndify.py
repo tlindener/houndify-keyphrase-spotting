@@ -262,21 +262,30 @@ class VoiceQuery:
 			if response.has_key("AllResults"):
 				allResults = response["AllResults"]
 				for result in allResults:
-					if result.has_key("CommandKind"):
-						matchedCommand = self._matchCommand(result["CommandKind"], allResults)
-						if matchedCommand and result.has_key("ClientActionSucceededResult"):
-							result = result["ClientActionSucceededResult"]
-					if result.has_key("SpokenResponseLong"):
-						playwave.play('resources/hound_stop.wav')
-						answer = result["SpokenResponseLong"]
-						print answer
-						os.system("say -v Samantha '"+answer+"'")
+					if self._handleResult(result, allResults):
 						return
 			print 'No result :('
 		def onTranslatedResponse(self, response):
 			print "Translated response: " + response
 		def onError(self, err):
 			print "ERROR"
+
+		def _handleResult(self, result, allResults):
+			'''
+			Handle a result from the AllResults section of the JSON response
+			Returns if a response was found
+			'''
+			if result.has_key("CommandKind"):
+				matchedCommand = self._matchCommand(result["CommandKind"], allResults)
+				if matchedCommand and result.has_key("ClientActionSucceededResult"):
+					result = result["ClientActionSucceededResult"]
+			if result.has_key("SpokenResponseLong"):
+				playwave.play('resources/hound_stop.wav')
+				answer = result["SpokenResponseLong"]
+				print answer
+				os.system("say -v Samantha '"+answer+"'")
+				return True
+			return False
 
 		def _matchCommand(self, commandKind, allResults):
 			matched = False
