@@ -17,6 +17,8 @@ import pyaudio
 import os
 import playwave
 
+import ClientMatches
+
 HOUND_SERVER = "api.houndify.com"
 TEXT_ENDPOINT = "/v1/text"
 
@@ -281,6 +283,7 @@ class VoiceQuery:
 		client = StreamingHoundClient(self.CLIENT_KEY, self.CLIENT_ID)
 		## Pretend we're at SoundHound HQ.  Set other fields as appropriate
 		client.setLocation(37.388309, -121.973968)
+		client.setHoundRequestInfo('ClientMatches', ClientMatches.getClientMatches())
 
 		finished = False
 		client.start(self.MyListener())
