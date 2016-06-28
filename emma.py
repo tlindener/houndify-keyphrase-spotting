@@ -70,12 +70,12 @@ class KeywordDetector:
 
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    client.subscribe("home/speech/local/action)
+    client.subscribe("home/speech/local/action")
 
     # The callback for when a PUBLISH message is received from the server.
     def on_message(client, userdata, msg):
         print(msg.topic+" "+str(msg.payload))
-        if msg.payload=="on"
+        if str(msg.payload)=="on":
 
 
 if __name__ == '__main__':
