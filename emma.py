@@ -10,12 +10,12 @@ MODELDIR = "pocketsphinx/model"
 
 class KeywordDetector:
     def __init__(self):
-        client = mqtt.Client()
-        client.on_connect = on_connect
-        client.on_message = on_message
+        self.client = mqtt.Client()
+        self.client.on_connect = on_connect
+        self.client.on_message = on_message
 
-        client.connect("192.168.178.44", 1883, 60)
-        client.loop_start()
+        self.client.connect("192.168.178.44", 1883, 60)
+        self.client.loop_start()
 
         self.hmm_directory = os.path.join(MODELDIR, 'en-us/en-us')
         self.dictionary_file = os.path.join(MODELDIR, 'en-us/cmudict-en-us.dict')
@@ -67,9 +67,9 @@ class KeywordDetector:
     def on_connect(client, userdata, flags, rc):
         print("Connected with result code "+str(rc))
 
-    # Subscribing in on_connect() means that if we lose the connection and
-    # reconnect then subscriptions will be renewed.
-    client.subscribe("home/speech/local/action")
+        # Subscribing in on_connect() means that if we lose the connection and
+        # reconnect then subscriptions will be renewed.
+        self.client.subscribe("home/speech/local/action")
 
     # The callback for when a PUBLISH message is received from the server.
     def on_message(client, userdata, msg):
