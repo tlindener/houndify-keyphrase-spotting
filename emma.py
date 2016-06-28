@@ -1,6 +1,5 @@
 import os
 import pyaudio
-import houndify
 from pocketsphinx import pocketsphinx
 import paho.mqtt.client as mqtt
 
@@ -75,7 +74,7 @@ class KeywordDetector:
     # The callback for when a PUBLISH message is received from the server.
     def on_message(client, userdata, msg):
         print(msg.topic+" "+str(msg.payload))
-        if str(msg.payload)=="on":
+        # if str(msg.payload)=="on":
 
 
 if __name__ == '__main__':
