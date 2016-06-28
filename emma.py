@@ -2,6 +2,7 @@ import os
 import pyaudio
 import houndify
 from pocketsphinx import pocketsphinx
+import paho.mqtt.client as mqtt
 
 FORMAT = pyaudio.paInt16
 RATE = 16000
@@ -9,8 +10,13 @@ BUFFER_SIZE = 1024
 MODELDIR = "pocketsphinx/model"
 
 class KeywordDetector:
-    def __init__(self, key, id):
-        self.houndClient = houndify.VoiceQuery(key, id)
+    def __init__(self):
+        client = mqtt.Client()
+        client.on_connect = on_connect
+        client.on_message = on_message
+
+        client.connect("192.168.178.44", 1883, 60)
+        client.loop_start()
 
         self.hmm_directory = os.path.join(MODELDIR, 'en-us/en-us')
         self.dictionary_file = os.path.join(MODELDIR, 'en-us/cmudict-en-us.dict')
@@ -35,7 +41,7 @@ class KeywordDetector:
         decoder = pocketsphinx.Decoder(config)
 
         decoder.set_lm_file("lm", self.language_model_file)
-        decoder.set_keyphrase("kws", "hey ada")
+        decoder.set_keyphrase("kws", "hey emma")
         decoder.set_search("kws")
 
         p = pyaudio.PyAudio()
@@ -54,19 +60,33 @@ class KeywordDetector:
                 print decoder.hyp().hypstr
                 stream.stop_stream()
                 decoder.end_utt()
-                self.houndClient.query()
+                # self.houndClient.query()
                 stream.start_stream()
                 decoder.start_utt()
+
+    # The callback for when the client receives a CONNACK response from the server.
+    def on_connect(client, userdata, flags, rc):
+        print("Connected with result code "+str(rc))
+
+    # Subscribing in on_connect() means that if we lose the connection and
+    # reconnect then subscriptions will be renewed.
+    client.subscribe("home/speech/local/action)
+
+    # The callback for when a PUBLISH message is received from the server.
+    def on_message(client, userdata, msg):
+        print(msg.topic+" "+str(msg.payload))
+        if msg.payload=="on"
+
 
 if __name__ == '__main__':
     import sys
 
-    if len(sys.argv) < 3:
-        print "Usage: %s <client key> <client ID>" % sys.argv[0]
-        sys.exit(0)
+    # if len(sys.argv) < 3:
+    #     print "Usage: %s <client key> <client ID>" % sys.argv[0]
+    #     sys.exit(0)
+    #
+    # CLIENT_KEY = sys.argv[1]
+    # CLIENT_ID = sys.argv[2]
 
-    CLIENT_KEY = sys.argv[1]
-    CLIENT_ID = sys.argv[2]
-
-    kd = KeywordDetector(CLIENT_KEY, CLIENT_ID)
+    kd = KeywordDetector()
     kd.start()
